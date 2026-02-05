@@ -386,7 +386,7 @@ resource "aws_instance" "ec2" {
   for_each = local.ec2_instances
 
   ami           = var.ami
-  # instance_type = "t2.micro"
+  # instance_type = "t2.micro" ( change to t3a.nano 5th feb 2026 - NM/PC )
   instance_type = "t3a.nano"
   subnet_id     = local.subnet_map[each.value.env]
 
