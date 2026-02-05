@@ -68,12 +68,12 @@ locals {
       role       = "db"
       compliance = "low"
     },
-    # "crm-dev-counter" = {
-    # app        = "crm"
-    # env        = "dev"
-    # role       = "counter"
-    # compliance = "low"
-    # },
+   "crm-dev-counter" = {
+     app        = "crm"
+     env        = "dev"
+     role       = "counter"
+     compliance = "low"
+    },
     "finance-prod-web" = {
       app        = "finance"
       env        = "prod"
@@ -92,12 +92,12 @@ locals {
       role       = "db"
       compliance = "high"
     },
-    # "crm-prod-counter" = {
-    # app        = "crm"
-    # env        = "prod"
-    # role       = "counter"
-    # compliance = "high"
-    # }
+    "crm-prod-counter" = {
+      app        = "crm"
+      env        = "prod"
+      role       = "counter"
+      compliance = "high"
+    }
   }
 
   subnet_map = {
@@ -111,7 +111,7 @@ locals {
     web        = aws_security_group.web_sg.id
     db         = aws_security_group.db_sg.id
     processing = aws_security_group.processing_sg.id
-  # counter    = aws_security_group.counter_sg.id
+    counter    = aws_security_group.counter_sg.id
   }
 
   private_ip_map = {
@@ -119,11 +119,11 @@ locals {
     "finance-dev-web"            = "10.0.1.10"
     "finance-dev-processing"     = "10.0.1.20"
     "finance-dev-db"             = "10.0.1.30"
-  # "crm-dev-counter"            = "10.0.1.40"
+    "crm-dev-counter"            = "10.0.1.40"
     "finance-prod-web"           = "10.0.3.10"
     "finance-prod-processing"    = "10.0.3.20"
     "finance-prod-db"            = "10.0.3.30"
-  # "crm-prod-counter"           = "10.0.3.40"
+    "crm-prod-counter"           = "10.0.3.40"
   }
 }
 
@@ -350,30 +350,30 @@ resource "aws_security_group" "processing_sg" {
   }
 }
 
-# resource "aws_security_group" "counter_sg" {
-# name   = "counter_sg"
-# vpc_id = aws_vpc.illumio_lab.id
-# 
-# ingress {
-#   from_port   = 22
-#   to_port     = 22
-#   protocol    = "tcp"
-#   cidr_blocks = ["0.0.0.0/0"]
-# }
+resource "aws_security_group" "counter_sg" {
+  name   = "counter_sg"
+  vpc_id = aws_vpc.illumio_lab.id
 
-#  egress {
-#   from_port   = 0
-#   to_port     = 0
-#   protocol    = "-1"
-#   cidr_blocks = ["0.0.0.0/0"]
-# }
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+}
 
-# tags = {
-#   Name    = "counter_sg"
-#   role    = "counter"
-#   company = "illumio"
-# }
-#}
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+}
+
+  tags = {
+    Name    = "counter_sg"
+    role    = "counter"
+    company = "illumio"
+  }
+}
 
 ###############################
 # 5. EC2 Instances (static IPs)
