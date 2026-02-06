@@ -236,7 +236,7 @@ resource "aws_route_table_association" "prod_assoc" {
 ###############################
 # 4. Security Groups (per role, SSH only)
 ###############################
-resource "aws_security_group" "jumpbox_sg" {
+resource "aws_security_group" "nagios_sg" {
   name   = "nagios_sg"
   vpc_id = aws_vpc.illumio_lab.id
 
