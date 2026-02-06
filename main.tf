@@ -95,7 +95,7 @@ locals {
   }
 
   security_group_map = {
-    nagios    = aws_security_group.nagios.id
+    nagios    = aws_security_group.nagios_sg.id
     web        = aws_security_group.web_sg.id
     db         = aws_security_group.db_sg.id
     processing = aws_security_group.processing_sg.id
