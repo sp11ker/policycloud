@@ -95,7 +95,7 @@ locals {
   }
 
   security_group_map = {
-    jumpbox    = aws_security_group.jumpbox_sg.id
+    nagios    = aws_security_group.nagios.id
     web        = aws_security_group.web_sg.id
     db         = aws_security_group.db_sg.id
     processing = aws_security_group.processing_sg.id
