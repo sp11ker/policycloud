@@ -44,10 +44,10 @@ resource "aws_s3_bucket" "illumio_flows" {
 ###############################
 locals {
   ec2_instances = {
-    "monitoring-staging-jumpbox" = {
+    "monitoring-staging-nagios" = {
       app        = "monitoring"
       env        = "staging"
-      role       = "jumpbox"
+      role       = "nagios"
       compliance = "medium"
     },
     "finance-dev-db" = {
@@ -103,7 +103,7 @@ locals {
   }
 
   private_ip_map = {
-    "monitoring-staging-jumpbox" = "10.0.2.50"
+    "monitoring-staging-nagios" = "10.0.2.50"
     "finance-dev-db"             = "10.0.1.30"
     "crm-dev-counter"            = "10.0.1.40"
     "finance-prod-web"           = "10.0.3.10"
@@ -237,7 +237,7 @@ resource "aws_route_table_association" "prod_assoc" {
 # 4. Security Groups (per role, SSH only)
 ###############################
 resource "aws_security_group" "jumpbox_sg" {
-  name   = "jumpbox_sg"
+  name   = "nagios_sg"
   vpc_id = aws_vpc.illumio_lab.id
 
   ingress {
@@ -255,8 +255,8 @@ resource "aws_security_group" "jumpbox_sg" {
   }
 
   tags = {
-    Name    = "jumpbox_sg"
-    role    = "jumpbox"
+    Name    = "nagios_sg"
+    role    = "nagios"
     company = "illumio"
   }
 }
