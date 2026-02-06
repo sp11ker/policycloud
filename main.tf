@@ -50,18 +50,6 @@ locals {
       role       = "jumpbox"
       compliance = "medium"
     },
-    "finance-dev-web" = {
-      app        = "finance"
-      env        = "dev"
-      role       = "web"
-      compliance = "low"
-    },
-    "finance-dev-processing" = {
-      app        = "finance"
-      env        = "dev"
-      role       = "processing"
-      compliance = "low"
-    },
     "finance-dev-db" = {
       app        = "finance"
       env        = "dev"
@@ -115,9 +103,7 @@ locals {
   }
 
   private_ip_map = {
-    "monitoring-staging-jumpbox" = "10.0.2.50"  # jumpbox
-    "finance-dev-web"            = "10.0.1.10"
-    "finance-dev-processing"     = "10.0.1.20"
+    "monitoring-staging-jumpbox" = "10.0.2.50"
     "finance-dev-db"             = "10.0.1.30"
     "crm-dev-counter"            = "10.0.1.40"
     "finance-prod-web"           = "10.0.3.10"
