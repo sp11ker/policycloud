@@ -56,11 +56,11 @@ locals {
       role       = "db"
       compliance = "low"
     },
-   "crm-dev-counter" = {
-     app        = "crm"
-     env        = "dev"
-     role       = "counter"
-     compliance = "low"
+    "crm-dev-counter" = {
+      app        = "crm"
+      env        = "dev"
+      role       = "counter"
+      compliance = "low"
     },
     "finance-prod-web" = {
       app        = "finance"
@@ -95,7 +95,7 @@ locals {
   }
 
   security_group_map = {
-    nagios    = aws_security_group.nagios_sg.id
+    nagios     = aws_security_group.nagios_sg.id
     web        = aws_security_group.web_sg.id
     db         = aws_security_group.db_sg.id
     processing = aws_security_group.processing_sg.id
@@ -104,12 +104,12 @@ locals {
 
   private_ip_map = {
     "monitoring-staging-nagios" = "10.0.2.50"
-    "finance-dev-db"             = "10.0.1.30"
-    "crm-dev-counter"            = "10.0.1.40"
-    "finance-prod-web"           = "10.0.3.10"
-    "finance-prod-processing"    = "10.0.3.20"
-    "finance-prod-db"            = "10.0.3.30"
-    "crm-prod-counter"           = "10.0.3.40"
+    "finance-dev-db"           = "10.0.1.30"
+    "crm-dev-counter"          = "10.0.1.40"
+    "finance-prod-web"         = "10.0.3.10"
+    "finance-prod-processing"  = "10.0.3.20"
+    "finance-prod-db"          = "10.0.3.30"
+    "crm-prod-counter"         = "10.0.3.40"
   }
 }
 
@@ -345,14 +345,14 @@ resource "aws_security_group" "counter_sg" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-}
+  }
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-}
+  }
 
   tags = {
     Name    = "counter_sg"
@@ -362,17 +362,19 @@ resource "aws_security_group" "counter_sg" {
 }
 
 ###############################
-# 5. EC2 Instances (static IPs)
+# 5. AMI (UPDATED: Amazon Linux 2023 for t3a.nano)
 ###############################
-variable "ami" {
-  default = "ami-0e95a5e2743ec9ec9"
+data "aws_ssm_parameter" "ami" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
 }
 
+###############################
+# 6. EC2 Instances (static IPs)
+###############################
 resource "aws_instance" "ec2" {
   for_each = local.ec2_instances
 
-  ami           = var.ami
-  # instance_type = "t2.micro" ( change to t3a.nano 5th feb 2026 - NM/PC )
+  ami           = data.aws_ssm_parameter.ami.value
   instance_type = "t3a.nano"
   subnet_id     = local.subnet_map[each.value.env]
 
